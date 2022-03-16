@@ -15,6 +15,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
 import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -61,39 +64,40 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservable() {
-        viewModel.communityObservable.observe(this) {
-            when (it) {
-                is State.SUCCESS -> mAdapter.setData(it.data)
+        viewModel.loadFirstPage()
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.communityState.collect{
+                    when (it) {
+                        is State.SUCCESS -> mAdapter.setData(it.data)
 
-                is State.ERROR -> {
-                    Timber.e("Error Message = ${it.error.message}")
-                    isLoading = false
-                }
-                is State.LOADING -> {
-                    isLoading = it.isLoading
-                    if (it.showLoadingMain){
-                        progressBar.visibility = View.VISIBLE
-                    }else{
-                        progressBar.visibility = View.GONE
-                    }
-                    it.showLoadingFooter?.let {
-                        if (it) {
-                            mAdapter.addLoadingFooter()
-                        } else {
-                            mAdapter.removeLoadingFooter()
+                        is State.ERROR -> {
+                            Timber.e("Error Message = ${it.error.message}")
+                            isLoading = false
+                        }
+                        is State.LOADING -> {
+                            isLoading = it.isLoading
+                            if (it.showLoadingMain){
+                                progressBar.visibility = View.VISIBLE
+                            }else{
+                                progressBar.visibility = View.GONE
+                            }
+                            it.showLoadingFooter?.let {
+                                if (it) {
+                                    mAdapter.addLoadingFooter()
+                                } else {
+                                    mAdapter.removeLoadingFooter()
+                                }
+                            }
+                        }
+                        is State.LASTPAGE -> {
+                            isLastPage = it.isLastPage
+                            progressBar.visibility = View.GONE
+                            mAdapter.notifyDataSet()
                         }
                     }
                 }
-                is State.LASTPAGE -> {
-                    isLastPage = it.isLastPage
-                    progressBar.visibility = View.GONE
-                    mAdapter.notifyDataSet()
-                }
             }
         }
-        viewModel.isLastPage.observe(this) {
-            isLastPage = it
-        }
-        viewModel.loadFirstPage()
     }
 }

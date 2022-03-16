@@ -1,6 +1,5 @@
-package com.example.paginationscratchapp
+package com.example.paginationscratchapp.domain
 
-import com.example.paginationscratchapp.domain.CommunityMapper
 import com.example.paginationscratchapp.data.api.CommunityService
 import com.example.paginationscratchapp.data.model.Profile
 import com.example.paginationscratchapp.di.IoDispatcher

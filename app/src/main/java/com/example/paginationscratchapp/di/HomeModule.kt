@@ -1,7 +1,7 @@
 package com.example.paginationscratchapp.di
 
-import com.example.paginationscratchapp.HomeUseCase
-import com.example.paginationscratchapp.HomeUseCaseImpl
+import com.example.paginationscratchapp.domain.HomeUseCase
+import com.example.paginationscratchapp.domain.HomeUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
