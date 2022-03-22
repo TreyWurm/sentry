@@ -9,12 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.paginationscratchapp.R
 import com.example.paginationscratchapp.ui.HomeViewModel.State
-import com.example.paginationscratchapp.data.api.CommunityService
 import com.example.paginationscratchapp.util.CustomOnScrollListener
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
-import javax.inject.Inject
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -30,9 +27,6 @@ class MainActivity : AppCompatActivity() {
     private var isLoading = false
     private var isLastPage = false
     private val viewModel: HomeViewModel by viewModels()
-
-    @Inject
-    lateinit var communityService: CommunityService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,20 +64,20 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 viewModel.communityShared.collect {
                     if (it is State.ERROR){
-                        Toast.makeText(this@MainActivity,it.error.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MainActivity,it.message, Toast.LENGTH_LONG).show()
                         progressBar.visibility = View.GONE
-                        Timber.e("Error Message = ${it.error.message}")
+                        Timber.e("Error Message = ${it.message}")
                         isLoading = false
                     }
                 }
             }
-
         }
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.communityState.collectLatest{
                     when (it) {
                         is State.SUCCESS -> mAdapter.setData(it.data)
+
 
                         is State.LOADING -> {
                             isLoading = it.isLoading

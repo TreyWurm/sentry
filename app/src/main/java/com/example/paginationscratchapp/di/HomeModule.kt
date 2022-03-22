@@ -1,7 +1,7 @@
 package com.example.paginationscratchapp.di
 
-import com.example.paginationscratchapp.domain.HomeUseCase
-import com.example.paginationscratchapp.domain.HomeUseCaseImpl
+import com.example.paginationscratchapp.domain.GetCommunityUseCase
+import com.example.paginationscratchapp.domain.GetCommunityUseCaseImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -11,5 +11,5 @@ import dagger.hilt.android.components.ViewModelComponent
 @InstallIn(ViewModelComponent::class)
 abstract class HomeModule {
     @Binds
-    abstract fun provideHomeModule(homeUseCaseImpl: HomeUseCaseImpl): HomeUseCase
+    abstract fun provideHomeModule(getCommunityUseCase: GetCommunityUseCaseImpl): GetCommunityUseCase
 }
