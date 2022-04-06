@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PaginationScratchApp</string>
+    <string name="app_name">POC Android</string>
     <string name="error_not_found">Error: Not Found</string>
     <string name="error_something_went_wrong">Something went wrong</string>
 </resources>

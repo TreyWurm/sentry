@@ -1,4 +1,4 @@
-package com.example.paginationscratchapp
+package com.citiesapps.poc.sentry
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
